@@ -11,9 +11,12 @@
 |
 */
 
+/*
 Route::get('/', function () {
     return view('welcome');
 });
+*/
+//Route::get('/','UploadController@upindex') ;
 Route::get('/home','ServantController@home');
 
 Route::get('/test',function(){
@@ -23,3 +26,10 @@ Route::get('/upload/{dorm}','ServantController@update');
 Route::post('/up','UploadController@fileupload')->name('up');
 Route::get('/upindex','UploadController@upindex')->name('upindex');
 Route:: get('/upyes','UploadController@upyes')->name('upyes');
+Route::post('/dormname','UploadController@dormname')->name('dormname');
+Route::post('/uplist','UploadController@uplist')->name('uplist');
+Route::post('/download','UploadController@download')->name('download');
+
+Route::get('/',function(){
+    return view('test');
+});
