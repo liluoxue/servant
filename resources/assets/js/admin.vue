@@ -1,17 +1,25 @@
 <template>
     
-        
+        <div>
         <Table border :columns="columns" :data="tabledata" >
+            
             <template slot-scope="{ row }" slot="name">
                 <strong>{{ row.name }}</strong>
             </template>
             <template slot-scope="{ row }" slot="download">
-                <Button type="primary" size="small"  @click="download(row)">View</Button>
+                <Button type="primary" size="small"  @click="download(row)">下载</Button>
                 
             </template>
         </Table>
+        <Modal
+        v-model="modal1"
+        title="该宿舍还没交作业噢"
+        @on-ok="ok"
+        @on-cancel="cancel">
+        <p>催他们交作业咯~</p>
+        </Modal>
         
-        
+        </div>
     
     
 </template>
@@ -23,13 +31,10 @@
         data() {
             return {
                 mid:'1',
+                modal1: false,
                 loading :true,
                 columns: [
-                    {
-                        title:'上传号',
-                        key:'id'
-                    }
-                    ,
+                    
                     {
                         title:'宿舍号',
                         key:'dormname'
@@ -75,9 +80,24 @@
         methods:{
             download:function(row){
                 let formdata=new FormData();
-                formdata.append('id',row.id);
-                axios.post('/servant/download',formdata).then(res=>{
-                    console.log(res);
+                
+                if(!this.tabledata[row._index].id)
+                {
+                    this.modal1=true;
+                }
+                formdata.append('id',this.tabledata[row._index].id);
+                let config={                
+                                 
+                    responseType: 'blob',            
+        	    }
+                axios.post('/servant/download',formdata).then(response=>{
+                    console.log(response);
+                    const url = window.URL.createObjectURL(new Blob([response.data]));                
+                    const link = document.createElement('a');                
+                    link.href = url;                
+                    link.setAttribute('download', 'file.cpp');                
+                    document.body.appendChild(link);                
+                    link.click();       
                 });
             }
         }

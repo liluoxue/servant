@@ -159,6 +159,7 @@ class UploadController extends Controller
     {
         $id=$request->id;
         $path=DB::table('submits')->where('id',$id)->first()->file;
-        return response()->download($path);
+        $name=basename($path);
+        return response()->download(storage_path('app/'.$path),$name.'.cpp');
     }
 }

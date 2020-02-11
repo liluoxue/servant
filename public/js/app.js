@@ -94759,7 +94759,7 @@ exports = module.exports = __webpack_require__(4)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -94788,6 +94788,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: '',
@@ -94795,11 +94803,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             mid: '1',
+            modal1: false,
             loading: true,
             columns: [{
-                title: '上传号',
-                key: 'id'
-            }, {
                 title: '宿舍号',
                 key: 'dormname'
             }, {
@@ -94837,9 +94843,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     methods: {
         download: function download(row) {
             var formdata = new FormData();
-            formdata.append('id', row.id);
-            axios.post('/servant/download', formdata).then(function (res) {
-                console.log(res);
+
+            if (!this.tabledata[row._index].id) {
+                this.modal1 = true;
+            }
+            formdata.append('id', this.tabledata[row._index].id);
+            var config = {
+
+                responseType: 'blob'
+            };
+            axios.post('/servant/download', formdata).then(function (response) {
+                console.log(response);
+                var url = window.URL.createObjectURL(new Blob([response.data]));
+                var link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', 'file.cpp');
+                document.body.appendChild(link);
+                link.click();
             });
         }
     }
@@ -94853,38 +94873,60 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("Table", {
-    attrs: { border: "", columns: _vm.columns, data: _vm.tabledata },
-    scopedSlots: _vm._u([
-      {
-        key: "name",
-        fn: function(ref) {
-          var row = ref.row
-          return [_c("strong", [_vm._v(_vm._s(row.name))])]
-        }
-      },
-      {
-        key: "download",
-        fn: function(ref) {
-          var row = ref.row
-          return [
-            _c(
-              "Button",
-              {
-                attrs: { type: "primary", size: "small" },
-                on: {
-                  click: function($event) {
-                    return _vm.download(row)
-                  }
-                }
-              },
-              [_vm._v("View")]
-            )
-          ]
-        }
-      }
-    ])
-  })
+  return _c(
+    "div",
+    [
+      _c("Table", {
+        attrs: { border: "", columns: _vm.columns, data: _vm.tabledata },
+        scopedSlots: _vm._u([
+          {
+            key: "name",
+            fn: function(ref) {
+              var row = ref.row
+              return [_c("strong", [_vm._v(_vm._s(row.name))])]
+            }
+          },
+          {
+            key: "download",
+            fn: function(ref) {
+              var row = ref.row
+              return [
+                _c(
+                  "Button",
+                  {
+                    attrs: { type: "primary", size: "small" },
+                    on: {
+                      click: function($event) {
+                        return _vm.download(row)
+                      }
+                    }
+                  },
+                  [_vm._v("下载")]
+                )
+              ]
+            }
+          }
+        ])
+      }),
+      _vm._v(" "),
+      _c(
+        "Modal",
+        {
+          attrs: { title: "该宿舍还没交作业噢" },
+          on: { "on-ok": _vm.ok, "on-cancel": _vm.cancel },
+          model: {
+            value: _vm.modal1,
+            callback: function($$v) {
+              _vm.modal1 = $$v
+            },
+            expression: "modal1"
+          }
+        },
+        [_c("p", [_vm._v("催他们交作业咯~")])]
+      )
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
