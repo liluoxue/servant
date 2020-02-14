@@ -28,7 +28,7 @@
                 <p>轻点人家传文件嘛~</p>
             </div>
         </Upload>
-        
+        <div v-if="file!==null"><p>{{file.name}}</p></div>
     </Form>
     </Card>
 </template>
@@ -62,13 +62,18 @@
         },
         mounted:function(){
             let formdata = new FormData();
+            //console.log(this.$route.params);
+            console.log(this.$route.query);
+            this.upWork.dormid=this.$route.query.dormid;
+            this.upWork.missionid=this.$route.query.missionid;
+            this.upWork.filename=this.$route.query.missionname;
             let config = {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
                 }
             formdata.append('dormid',this.upWork.dormid);
-            console.log(formdata);
+            //console.log(formdata);
             axios.post('/servant/dormname',formdata,config).then(res =>{
                 this.upWork.dormname=res.data.dormname;
                 console.log(res.data.dormname);
@@ -115,7 +120,7 @@
             },
             handleUpload(file) {
                 this.file = file;
-                console.log(file);
+                
                 return false;
             }
         }
