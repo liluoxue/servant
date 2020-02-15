@@ -1,7 +1,7 @@
 <template>
     <div>
 
-        <Row type="flex" justify="center" align="middle" class="code-row-bg">
+        <Row type="flex" justify="center" align="middle" class="code-row-bg":gutter="24">
             <Col span="8">
             <Card style="width:320px align:middle" class="ivu-card-align" v-model="did[0]">
                 <div style="text-align:center" @click="mission1">

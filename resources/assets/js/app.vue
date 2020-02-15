@@ -43,10 +43,10 @@
                             <Icon type="ios-navigate"></Icon>
                             任务列表
                         </MenuItem>
-                        <MenuItem name="2" >
+                        <!-- <MenuItem name="2" >
                             <Icon type="ios-keypad"></Icon>
                             上传页面
-                        </MenuItem>
+                        </MenuItem> 测试页面-->
                         <MenuItem name="3" >
                             <Icon type="ios-analytics"></Icon>
                             后台搜集页面
@@ -107,7 +107,7 @@
         else
         if(name==3)
         {
-          this.$router.push('/admin');
+          this.$router.push('/adminlist');
         }
         
       }

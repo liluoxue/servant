@@ -27,8 +27,9 @@ const RouterConfig = {
         // ExampleComponent laravel默认的示例组件
         { path: '/', component: require('./components/ExampleComponent.vue') },
         { path: '/up',name:'up',component: require('./components/up.vue')},   
-        { path: '/admin',component: require('./components/admin.vue')},
-        { path: '/mission/:did',name:'mission',component: require('./components/mission.vue')}
+        { path: '/admin',name:'admin',component: require('./components/admin.vue')},
+        { path: '/mission/:did',name:'mission',component: require('./components/mission.vue')},
+        { path: '/adminlist',name:'adminlist',component: require('./components/adminlist.vue')}
     ]
 };
 

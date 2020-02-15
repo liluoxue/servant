@@ -31,17 +31,20 @@
         data() {
             return {
                 mid:'1',
+                missionname:'',
                 modal1: false,
                 loading :true,
                 columns: [
                     
                     {
                         title:'宿舍号',
-                        key:'dormname'
+                        key:'dormname',
+                        align:'center'
                     },
                     {
                         title:'已交',
-                        key :'upif'
+                        key :'upif',
+                        align:'center'
                     },
         
                     {
@@ -57,6 +60,9 @@
             }
         },
         mounted: function(){
+            this.mid=this.$route.query.missionid;
+            this.missionname=this.$route.query.missionname;
+            console.log(this.mid);
             let formdata = new FormData();
             formdata.append('missionid',this.mid);
             console.log(formdata);
@@ -89,13 +95,24 @@
                 let config={                
                                  
                     responseType: 'blob',            
-        	    }
+                }
+                /*
                 axios.post('/servant/download',formdata).then(response=>{
                     console.log(response);
                     const url = window.URL.createObjectURL(new Blob([response.data]));                
                     const link = document.createElement('a');                
                     link.href = url;                
                     link.setAttribute('download', 'file.cpp');                
+                    document.body.appendChild(link);                
+                    link.click();       
+                });
+                */
+               axios.post('/servant/download',formdata).then(response=>{
+                    console.log(response);
+                    const url = response.data.url;               
+                    const link = document.createElement('a');                
+                    link.href = url;                
+                    link.setAttribute('download', response.data.name);                
                     document.body.appendChild(link);                
                     link.click();       
                 });

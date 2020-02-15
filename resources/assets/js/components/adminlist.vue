@@ -61,7 +61,7 @@
             formdata.append('mission', 'mission');
 
             this.did = this.$route.params.did;
-            formdata.append('did', this.did);
+            formdata.append('did', '-1');
             //console.log(formdata);
             axios.post('/servant/missionlist', formdata).then(res => {
                 //console.log(res);
@@ -83,7 +83,7 @@
             goto: function (row) {
                 console.log(row.id);
                 this.$router.push({
-                    name: 'up',
+                    name: 'admin',
                     query: {
                         missionid : row.id,
                         dormid: this.did,

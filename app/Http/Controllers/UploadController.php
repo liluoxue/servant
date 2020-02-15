@@ -142,14 +142,22 @@ class UploadController extends Controller
         $id = $request->id;
         $path = DB::table('submits')->where('id', $id)->first()->file;
         $name = basename($path);
-        return response()->download(storage_path('app/' . $path), $name . '.cpp');
+        //return response()->download(storage_path('app/' . $path), $name . '.cpp');
+        $data=[
+            'url'=>storage_path('app/' . $path),
+            'name'=>$name
+        ];
+        return $data;
     }
     public function missionlist(Request $request)
     {
         $did=$request->did;
-        
+       
         $missionlist = DB::table('missions')->get();
+        if($did!='-1')
         $dormname = DB::table('dorms')->where('id',$did)->first()->dormname;
+        else
+        $dormname='';
         $data=[
             'dormname'=>$dormname,
             'missionlist'=>$missionlist
