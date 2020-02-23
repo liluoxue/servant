@@ -94907,7 +94907,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }, {
                 title: '已交',
                 key: 'upif',
-                align: 'center'
+                align: 'center',
+                render: function render(h, params) {
+                    var row = params.row;
+                    var color = row.upif === 1 ? 'success' : row.upif === 0 ? 'error' : 'error';
+                    var text = row.upif === 1 ? '已交' : row.upif === 0 ? '未交' : '未交';
+                    return h('Tag', {
+                        props: {
+                            type: 'dot',
+                            color: color
+                        }
+                    }, text);
+                }
             }, {
                 title: '下载',
                 slot: 'download',

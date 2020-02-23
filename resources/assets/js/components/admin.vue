@@ -44,7 +44,19 @@
                     {
                         title:'已交',
                         key :'upif',
-                        align:'center'
+                        align:'center',
+                        render:(h,params) =>{
+                            const row =params.row;
+                            const color =row.upif===1?'success' : row.upif===0?'error':'error';
+                            const text =row.upif===1?'已交' : row.upif===0?'未交':'未交';
+                            return h('Tag',{
+                                props:{
+                                    type:'dot',
+                                    color:color
+                                }
+                            },text);
+                            
+                        }
                     },
         
                     {
