@@ -34,3 +34,5 @@ Route::post('/missionlist','UploadController@missionlist')->name('missionlist');
 Route::get('/',function(){
     return view('test');
 });
+
+Route::get('oauth','UploadController@oath')->name('oath');

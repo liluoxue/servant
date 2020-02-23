@@ -52,6 +52,11 @@
                             后台搜集页面
                         </MenuItem>
                         
+                          <Button @click="loginmodalalert">
+                            登录 
+                          </Button>
+                        
+                        
                     </div>
                 </Menu>
             </Header>
@@ -62,13 +67,37 @@
             </Content>
             <Footer class="layout-footer-center">2020 &copy; DIOGUA</Footer>
         </Layout>
+        <Modal
+        v-model="loginmodal"
+        title="登录"
+        @on-ok="ok"
+        @on-cancel="cancel">
+        <div style="text-align:center">
+        <Form ref="formline" :model="formline" rules="ruleInline" >
+          <FormItem label="用户名"prop="user">
+            <Input type="text" v-model="formline.username"placeholder="用户名"></Input>
+          </FormItem>
+          <FormItem label="密码"prop="password">
+            <Input type="password" v-model="formline.password"placeholder="密码"></Input>
+          </FormItem>
+          <FormItem>
+            <Button type="primary" @click="">登录</Button>
+          </FormItem>
+        </Form>
+        </div>
+    </Modal>
     </div>
 </template>
 <script>
   export default {
     data () {
       return {
-        isCollapsed: false
+        isCollapsed: false,
+        loginmodal : false,
+        formline:{
+          username:'123',
+          password:''
+        }
       };
     },
     computed: {
@@ -110,6 +139,10 @@
           this.$router.push('/adminlist');
         }
         
+      },
+      loginmodalalert: function()
+      {
+        this.loginmodal=true;
       }
     }
   }

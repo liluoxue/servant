@@ -164,4 +164,10 @@ class UploadController extends Controller
         ];
         return response()->json($data);
     }
+    public function oath()
+    {
+
+        $data['status']=200;
+        return $data;
+    }
 }
