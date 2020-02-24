@@ -36,3 +36,6 @@ Route::get('/',function(){
 });
 
 Route::get('oauth','UploadController@oath')->name('oath');
+
+
+

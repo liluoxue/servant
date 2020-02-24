@@ -1182,6 +1182,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_view_design___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_view_design__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_view_design_dist_styles_iview_css__ = __webpack_require__(51);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_view_design_dist_styles_iview_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_view_design_dist_styles_iview_css__);
+var _this = this;
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -1254,7 +1255,61 @@ router.beforeEach(function (to, from, next) {
         } else next();
     }
 });
-
+axios.interceptors.response.use(function (response) {
+    console.log(response);
+    return response;
+}, function (err) {
+    console.log(err);
+    if (err && err.response) {
+        switch (err.response.status) {
+            case 400:
+                __WEBPACK_IMPORTED_MODULE_3_view_design___default.a.Message.error('请求错误(400)');
+                break;
+            case 401:
+                __WEBPACK_IMPORTED_MODULE_3_view_design___default.a.Message.error('未授权，请重新登录(401)');
+                break;
+            case 403:
+                __WEBPACK_IMPORTED_MODULE_3_view_design___default.a.Message.error('拒绝访问');
+                break;
+            case 404:
+                __WEBPACK_IMPORTED_MODULE_3_view_design___default.a.Message.error('请求的地址不存在');
+                break;
+            case 408:
+                __WEBPACK_IMPORTED_MODULE_3_view_design___default.a.Message.error('请求超时(408)');
+                break;
+            case 422:
+                __WEBPACK_IMPORTED_MODULE_3_view_design___default.a.Message.error('提交的数据不正确');
+                break;
+            case 429:
+                __WEBPACK_IMPORTED_MODULE_3_view_design___default.a.Message.error('请求过于频繁，系统拒绝响应');
+                break;
+            case 500:
+                __WEBPACK_IMPORTED_MODULE_3_view_design___default.a.Message.error('服务器错误');
+                break;
+            case 501:
+                __WEBPACK_IMPORTED_MODULE_3_view_design___default.a.Message.error('服务未实现(501)');
+                break;
+            case 502:
+                __WEBPACK_IMPORTED_MODULE_3_view_design___default.a.Message.error('网络错误(502)');
+                break;
+            case 503:
+                __WEBPACK_IMPORTED_MODULE_3_view_design___default.a.Message.error('服务不可用(503)');
+                break;
+            case 504:
+                __WEBPACK_IMPORTED_MODULE_3_view_design___default.a.Message.error('网络超时(504)');
+                break;
+            case 505:
+                __WEBPACK_IMPORTED_MODULE_3_view_design___default.a.Message.error('HTTP版本不受支持(505)');
+                break;
+            default:
+                __WEBPACK_IMPORTED_MODULE_3_view_design___default.a.Message.error('连接出错(${err.response.status})!');
+        }
+    } else {
+        __WEBPACK_IMPORTED_MODULE_3_view_design___default.a.Message.error('连接服务器失败!');
+    }
+    _this.$toastr.w(err.message);
+    return Promise.reject(err);
+});
 var app = new Vue({
     el: '#app',
     router: router,
@@ -45236,6 +45291,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     return {
       isCollapsed: false,
       loginmodal: false,
+      buttonif: true,
       formline: {
         username: '123',
         password: ''
@@ -45249,6 +45305,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     }
 
   },
+
   methods: {
 
     toUp: function toUp() {
@@ -45274,6 +45331,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     loginmodalalert: function loginmodalalert() {
       this.loginmodal = true;
+    },
+    login: function login() {
+      var formdata = new FormData();
+      formdata.append('email', this.formline.username);
+      formdata.append('password', this.formline.password);
+
+      axios.post('/servant/api/auth/login', formdata).then(function (res) {
+        console.log(res);
+        if (res.data.access_token) {
+          axios.defaults.headers.common['Authorization'] = res.data.methodsaccess_token;
+          buttonif = false;
+          loginmodal = false;
+        }
+      });
     }
   }
 });
@@ -45336,11 +45407,13 @@ var render = function() {
                         1
                       ),
                       _vm._v(" "),
-                      _c("Button", { on: { click: _vm.loginmodalalert } }, [
-                        _vm._v(
-                          "\n                        登录 \n                      "
-                        )
-                      ])
+                      _vm.buttonif
+                        ? _c("Button", { on: { click: _vm.loginmodalalert } }, [
+                            _vm._v(
+                              "\n                        登录 \n                      "
+                            )
+                          ])
+                        : _c("p", [_vm._v(_vm._s(_vm.formline.username))])
                     ],
                     1
                   )
@@ -45445,7 +45518,7 @@ var render = function() {
                         "Button",
                         {
                           attrs: { type: "primary" },
-                          on: { click: function($event) {} }
+                          on: { click: _vm.login }
                         },
                         [_vm._v("登录")]
                       )
@@ -96156,6 +96229,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             tabledata: []
         };
     },
+
 
     mounted: function mounted() {
         var _this = this;

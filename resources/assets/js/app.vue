@@ -51,11 +51,11 @@
                             <Icon type="ios-analytics"></Icon>
                             后台搜集页面
                         </MenuItem>
-                        
-                          <Button @click="loginmodalalert">
+
+                          <Button v-if="buttonif" @click="loginmodalalert">
                             登录 
                           </Button>
-                        
+                          <p v-else>{{formline.username}}</p>
                         
                     </div>
                 </Menu>
@@ -74,14 +74,14 @@
         @on-cancel="cancel">
         <div style="text-align:center">
         <Form ref="formline" :model="formline" rules="ruleInline" >
-          <FormItem label="用户名"prop="user">
-            <Input type="text" v-model="formline.username"placeholder="用户名"></Input>
+          <FormItem label="用户名" prop="user">
+            <Input type="text" v-model="formline.username" placeholder="用户名"></Input>
           </FormItem>
-          <FormItem label="密码"prop="password">
-            <Input type="password" v-model="formline.password"placeholder="密码"></Input>
+          <FormItem label="密码" prop="password">
+            <Input type="password" v-model="formline.password" placeholder="密码"></Input>
           </FormItem>
           <FormItem>
-            <Button type="primary" @click="">登录</Button>
+            <Button type="primary" @click="login">登录</Button>
           </FormItem>
         </Form>
         </div>
@@ -94,6 +94,7 @@
       return {
         isCollapsed: false,
         loginmodal : false,
+        buttonif : true,
         formline:{
           username:'123',
           password:''
@@ -109,6 +110,7 @@
       }
       
     },
+    
     methods:{
       
       toUp:function(){
@@ -143,6 +145,22 @@
       loginmodalalert: function()
       {
         this.loginmodal=true;
+      },
+      login: function(){
+        let formdata=new FormData();
+        formdata.append('email',this.formline.username);
+        formdata.append('password',this.formline.password);
+        
+        axios.post('/servant/api/auth/login',formdata).then(res=>{
+          console.log(res);
+          if(res.data.access_token)
+          {
+            axios.defaults.headers.common['Authorization']=res.data.methodsaccess_token;
+            buttonif=false;
+            loginmodal=false;
+          }
+        })
+        
       }
     }
   }

@@ -71,6 +71,7 @@
                 ]
             }
         },
+        
         mounted: function(){
             this.mid=this.$route.query.missionid;
             this.missionname=this.$route.query.missionname;
