@@ -36,12 +36,12 @@
                     {
                         title: '任务号',
                         key: 'id',
-                        align:'center'
+                        align: 'center'
                     },
                     {
                         title: '该交的任务',
                         key: 'fname',
-                        align:'center'
+                        align: 'center'
                     },
 
                     {
@@ -67,12 +67,14 @@
                 //console.log(res);
                 if (this.tabledata == null) {
                     this.loading = true;
-                    console.log(res);
+                    //console.log(res);
                     this.dname = res.data.dormname;
                     this.tabledata = res.data.missionlist;
                 } else {
+
                     this.dname = res.data.dormname;
-                    this.tabledata = res.data.missionlist;
+                    if (this.dname != '')
+                        this.tabledata = res.data.missionlist;
                 }
             }).catch(err => {
                 console.log(err);
@@ -85,9 +87,9 @@
                 this.$router.push({
                     name: 'up',
                     query: {
-                        missionid : row.id,
+                        missionid: row.id,
                         dormid: this.did,
-                        missionname:row.fname
+                        missionname: row.fname
                     }
                 })
             }

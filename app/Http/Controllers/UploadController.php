@@ -155,7 +155,13 @@ class UploadController extends Controller
        
         $missionlist = DB::table('missions')->get();
         if($did!='-1')
-        $dormname = DB::table('dorms')->where('id',$did)->first()->dormname;
+        {
+            $dorm = DB::table('dorms')->where('id',$did)->first();
+            if($dorm!=null)
+                $dormname=$dorm->dormname;
+            else
+                $dormname='';
+        }
         else
         $dormname='';
         $data=[

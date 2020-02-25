@@ -57,8 +57,8 @@ const store = new Vuex.Store({
 const router = new VueRouter(RouterConfig);
 
 router.beforeEach((to,from,next)=>{
-    let getFlag = localStorage.getItem("Flag");
-    if(getFlag==="isLogin")
+    
+    if(axios.defaults.headers.common['Authorization']!='')
     {
         store.state.isLogin = true;
         next();
@@ -129,7 +129,7 @@ console.log(err);
   } else {
     ViewUI.Message.error( '连接服务器失败!')
   }
-  this.$toastr.w(err.message);
+  //this.$toastr.w(err.message);
   return Promise.reject(err);
 });
 const app = new Vue({

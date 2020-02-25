@@ -1182,7 +1182,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_view_design___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_view_design__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_view_design_dist_styles_iview_css__ = __webpack_require__(51);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_view_design_dist_styles_iview_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_view_design_dist_styles_iview_css__);
-var _this = this;
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -1241,8 +1240,8 @@ var store = new __WEBPACK_IMPORTED_MODULE_2_vuex__["a" /* default */].Store({
 var router = new __WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */](RouterConfig);
 
 router.beforeEach(function (to, from, next) {
-    var getFlag = localStorage.getItem("Flag");
-    if (getFlag === "isLogin") {
+
+    if (axios.defaults.headers.common['Authorization'] != '') {
         store.state.isLogin = true;
         next();
     } else {
@@ -1307,7 +1306,7 @@ axios.interceptors.response.use(function (response) {
     } else {
         __WEBPACK_IMPORTED_MODULE_3_view_design___default.a.Message.error('连接服务器失败!');
     }
-    _this.$toastr.w(err.message);
+    //this.$toastr.w(err.message);
     return Promise.reject(err);
 });
 var app = new Vue({
@@ -44923,7 +44922,7 @@ exports = module.exports = __webpack_require__(11)(false);
 
 
 // module
-exports.push([module.i, "\n.layout[data-v-6971d05f]{\n        border: 1px solid #d7dde4;\n        background: #f5f7f9;\n        position: relative;\n        border-radius: 4px;\n        overflow: hidden;\n}\n.layout-logo[data-v-6971d05f]{\n        width: 100px;\n        height: 30px;\n        background: #5b6270;\n        border-radius: 3px;\n        float: left;\n        position: relative;\n        top: 15px;\n        left: 20px;\n}\n.layout-nav[data-v-6971d05f]{\n        width: 420px;\n        margin: 0 auto;\n        margin-right: 20px;\n}\n.layout-footer-center[data-v-6971d05f]{\n        text-align: center;\n}\n.component-fade-enter-active[data-v-6971d05f], .component-fade-leave-active[data-v-6971d05f] {\n  -webkit-transition: opacity .3s ease;\n  transition: opacity .3s ease;\n}\n.component-fade-enter[data-v-6971d05f], .component-fade-leave-to[data-v-6971d05f]\n/* .component-fade-leave-active for below version 2.1.8 */ {\n  opacity: 0;\n}\n", ""]);
+exports.push([module.i, "\n.layout[data-v-6971d05f] {\n  border: 1px solid #d7dde4;\n  background: #f5f7f9;\n  position: relative;\n  border-radius: 4px;\n  overflow: hidden;\n}\n.layout-logo[data-v-6971d05f] {\n  width: 100px;\n  height: 30px;\n  background: #5b6270;\n  border-radius: 3px;\n  float: left;\n  position: relative;\n  top: 15px;\n  left: 20px;\n}\n.layout-nav[data-v-6971d05f] {\n  width: 420px;\n  margin: 0 auto;\n  margin-right: 20px;\n}\n.layout-footer-center[data-v-6971d05f] {\n  text-align: center;\n}\n.component-fade-enter-active[data-v-6971d05f],\n.component-fade-leave-active[data-v-6971d05f] {\n  -webkit-transition: opacity .3s ease;\n  transition: opacity .3s ease;\n}\n.component-fade-enter[data-v-6971d05f],\n.component-fade-leave-to[data-v-6971d05f]\n\n/* .component-fade-leave-active for below version 2.1.8 */\n  {\n  opacity: 0;\n}\n", ""]);
 
 // exports
 
@@ -45285,6 +45284,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -45311,7 +45328,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     toUp: function toUp() {
       this.$router.push('/up');
     },
-
     toHome: function toHome() {
       this.$router.push('/');
     },
@@ -45332,7 +45348,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     loginmodalalert: function loginmodalalert() {
       this.loginmodal = true;
     },
-    login: function login() {
+
+    login: function login(name) {
+      var _this = this;
+
       var formdata = new FormData();
       formdata.append('email', this.formline.username);
       formdata.append('password', this.formline.password);
@@ -45340,11 +45359,31 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       axios.post('/servant/api/auth/login', formdata).then(function (res) {
         console.log(res);
         if (res.data.access_token) {
-          axios.defaults.headers.common['Authorization'] = res.data.methodsaccess_token;
-          buttonif = false;
-          loginmodal = false;
+          axios.defaults.headers.common['Authorization'] = "Bearer " + res.data.access_token;
+          console.log(res.data.access_token);
+          _this.buttonif = false;
+          _this.loginmodal = false;
+          _this.$Message.success('登录成功');
         }
       });
+    },
+    logout: function logout() {
+      var _this2 = this;
+
+      var formdata = new FormData();
+      formdata.append('email', this.formline.username);
+      formdata.append('password', this.formline.password);
+
+      axios.post('/servant/api/auth/logout', formdata).then(function (res) {
+        //console.log(res);
+        axios.defaults.headers.common['Authorization'] = '';
+        _this2.buttonif = true;
+        _this2.$Message.success('退出成功');
+      });
+    },
+    listjudge: function listjudge(name) {
+      console.log(name);
+      if (name == "logout") this.logout();
     }
   }
 });
@@ -45388,9 +45427,7 @@ var render = function() {
                         { attrs: { name: "1" } },
                         [
                           _c("Icon", { attrs: { type: "ios-navigate" } }),
-                          _vm._v(
-                            "\n                        任务列表\n                    "
-                          )
+                          _vm._v("\n          任务列表\n          ")
                         ],
                         1
                       ),
@@ -45400,20 +45437,49 @@ var render = function() {
                         { attrs: { name: "3" } },
                         [
                           _c("Icon", { attrs: { type: "ios-analytics" } }),
-                          _vm._v(
-                            "\n                        后台搜集页面\n                    "
-                          )
+                          _vm._v("\n          后台搜集页面\n          ")
                         ],
                         1
                       ),
                       _vm._v(" "),
                       _vm.buttonif
                         ? _c("Button", { on: { click: _vm.loginmodalalert } }, [
-                            _vm._v(
-                              "\n                        登录 \n                      "
-                            )
+                            _vm._v("\n            登录\n          ")
                           ])
-                        : _c("p", [_vm._v(_vm._s(_vm.formline.username))])
+                        : _c(
+                            "Dropdown",
+                            { on: { "on-click": _vm.listjudge } },
+                            [
+                              _c(
+                                "Button",
+                                [
+                                  _vm._v(
+                                    "\n              " +
+                                      _vm._s(_vm.formline.username) +
+                                      "\n              "
+                                  ),
+                                  _c("Icon", {
+                                    attrs: { type: "ios-arrow-down" }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "DropdownMenu",
+                                { attrs: { slot: "list" }, slot: "list" },
+                                [
+                                  _c(
+                                    "DropdownItem",
+                                    { attrs: { name: "logout" } },
+                                    [_vm._v("退出登录")]
+                                  )
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          )
                     ],
                     1
                   )
@@ -45521,6 +45587,21 @@ var render = function() {
                           on: { click: _vm.login }
                         },
                         [_vm._v("登录")]
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "FormItem",
+                    [
+                      _c(
+                        "Button",
+                        {
+                          attrs: { type: "dashed" },
+                          on: { click: _vm.logout }
+                        },
+                        [_vm._v("注销")]
                       )
                     ],
                     1
@@ -96478,12 +96559,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             //console.log(res);
             if (_this.tabledata == null) {
                 _this.loading = true;
-                console.log(res);
+                //console.log(res);
                 _this.dname = res.data.dormname;
                 _this.tabledata = res.data.missionlist;
             } else {
+
                 _this.dname = res.data.dormname;
-                _this.tabledata = res.data.missionlist;
+                if (_this.dname != '') _this.tabledata = res.data.missionlist;
             }
         }).catch(function (err) {
             console.log(err);
