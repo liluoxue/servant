@@ -45,7 +45,7 @@
   <div class="layout">
     <Layout>
       <Header :style="{position:'absolute', width: '100%'}">
-        <Menu mode="horizontal" theme="dark" active-name="1" @on-select="jump">
+        <Menu mode="horizontal" theme="dark" :active-name="menuactive" @on-select="jump">
           <!-- <div class="layout-logo"></div> -->
           <div class="layout-nav">
             <MenuItem name="1">
@@ -56,7 +56,7 @@
                             <Icon type="ios-keypad"></Icon>
                             上传页面
                         </MenuItem> 测试页面-->
-            <MenuItem name="3">
+            <MenuItem name="2">
             <Icon type="ios-analytics"></Icon>
             后台搜集页面
             </MenuItem>
@@ -113,6 +113,7 @@
         isCollapsed: false,
         loginmodal: false,
         buttonif: true,
+        menuactive : 3,
         formline: {
           username: '123',
           password: ''
@@ -152,7 +153,14 @@
         if (name == 3) {
           this.$router.push('/adminlist');
         }
-
+        if(this.$route.path=='/')
+        {
+          menuactive='1';
+        }
+        if(this.$route.path=='/adminlist')
+        {
+          menuactive='3';
+        }
       },
       loginmodalalert: function () {
         this.loginmodal = true;

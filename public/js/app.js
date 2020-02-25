@@ -45309,6 +45309,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       isCollapsed: false,
       loginmodal: false,
       buttonif: true,
+      menuactive: 3,
       formline: {
         username: '123',
         password: ''
@@ -45343,6 +45344,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.$router.push('/up');
       } else if (name == 3) {
         this.$router.push('/adminlist');
+      }
+      if (this.$route.path == '/') {
+        menuactive = '1';
+      }
+      if (this.$route.path == '/adminlist') {
+        menuactive = '3';
       }
     },
     loginmodalalert: function loginmodalalert() {
@@ -45413,7 +45420,7 @@ var render = function() {
                   attrs: {
                     mode: "horizontal",
                     theme: "dark",
-                    "active-name": "1"
+                    "active-name": _vm.menuactive
                   },
                   on: { "on-select": _vm.jump }
                 },
@@ -45434,7 +45441,7 @@ var render = function() {
                       _vm._v(" "),
                       _c(
                         "MenuItem",
-                        { attrs: { name: "3" } },
+                        { attrs: { name: "2" } },
                         [
                           _c("Icon", { attrs: { type: "ios-analytics" } }),
                           _vm._v("\n          后台搜集页面\n          ")
