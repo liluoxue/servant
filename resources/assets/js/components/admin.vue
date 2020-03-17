@@ -79,7 +79,7 @@
             let formdata = new FormData();
             formdata.append('missionid',this.mid);
             console.log(formdata);
-            axios.post('/servant/uplist',formdata).then(res=>{
+            axios.post('/uplist',formdata).then(res=>{
                 if(this.tabledata==null)
                     {
                         this.loading=true;
@@ -120,7 +120,7 @@
                     link.click();       
                 });
                 */
-               axios.post('/servant/download',formdata).then(response=>{
+               axios.post('/download',formdata).then(response=>{
                     console.log(response);
                     const url = response.data.url;               
                     const link = document.createElement('a');                

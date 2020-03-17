@@ -63,7 +63,7 @@
             this.did = this.$route.params.did;
             formdata.append('did', '-1');
             //console.log(formdata);
-            axios.post('/servant/missionlist', formdata).then(res => {
+            axios.post('/missionlist', formdata).then(res => {
                 //console.log(res);
                 if (this.tabledata == null) {
                     this.loading = true;

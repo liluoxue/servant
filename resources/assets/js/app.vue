@@ -171,7 +171,7 @@
         formdata.append('email', this.formline.username);
         formdata.append('password', this.formline.password);
 
-        axios.post('/servant/api/auth/login', formdata).then(res => {
+        axios.post('/api/auth/login', formdata).then(res => {
           console.log(res);
           if (res.data.access_token) {
             axios.defaults.headers.common['Authorization'] = "Bearer " + res.data.access_token;
@@ -188,7 +188,7 @@
         formdata.append('email', this.formline.username);
         formdata.append('password', this.formline.password);
 
-        axios.post('/servant/api/auth/logout', formdata).then(res => {
+        axios.post('/api/auth/logout', formdata).then(res => {
           //console.log(res);
           axios.defaults.headers.common['Authorization'] = '';
           this.buttonif=true;

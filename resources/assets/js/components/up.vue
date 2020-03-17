@@ -74,7 +74,7 @@
                 }
             formdata.append('dormid',this.upWork.dormid);
             //console.log(formdata);
-            axios.post('/servant/dormname',formdata,config).then(res =>{
+            axios.post('/dormname',formdata,config).then(res =>{
                 this.upWork.dormname=res.data.dormname;
                 console.log(res.data.dormname);
             }).catch(err=>{
@@ -104,7 +104,7 @@
                         'Content-Type': 'multipart/form-data'
                     }
                 }
-                axios.post('/servant/up', formdata,config).then(res => {
+                axios.post('/up', formdata,config).then(res => {
                     
                     console.log(res);
                     

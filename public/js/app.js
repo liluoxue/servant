@@ -45363,7 +45363,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       formdata.append('email', this.formline.username);
       formdata.append('password', this.formline.password);
 
-      axios.post('/servant/api/auth/login', formdata).then(function (res) {
+      axios.post('/api/auth/login', formdata).then(function (res) {
         console.log(res);
         if (res.data.access_token) {
           axios.defaults.headers.common['Authorization'] = "Bearer " + res.data.access_token;
@@ -45381,7 +45381,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       formdata.append('email', this.formline.username);
       formdata.append('password', this.formline.password);
 
-      axios.post('/servant/api/auth/logout', formdata).then(function (res) {
+      axios.post('/api/auth/logout', formdata).then(function (res) {
         //console.log(res);
         axios.defaults.headers.common['Authorization'] = '';
         _this2.buttonif = true;
@@ -96007,7 +96007,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
         formdata.append('dormid', this.upWork.dormid);
         //console.log(formdata);
-        axios.post('/servant/dormname', formdata, config).then(function (res) {
+        axios.post('/dormname', formdata, config).then(function (res) {
             _this.upWork.dormname = res.data.dormname;
             console.log(res.data.dormname);
         }).catch(function (err) {
@@ -96036,7 +96036,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     'Content-Type': 'multipart/form-data'
                 }
             };
-            axios.post('/servant/up', formdata, config).then(function (res) {
+            axios.post('/up', formdata, config).then(function (res) {
 
                 console.log(res);
 
@@ -96328,7 +96328,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         var formdata = new FormData();
         formdata.append('missionid', this.mid);
         console.log(formdata);
-        axios.post('/servant/uplist', formdata).then(function (res) {
+        axios.post('/uplist', formdata).then(function (res) {
             if (_this.tabledata == null) {
                 _this.loading = true;
                 console.log(res);
@@ -96363,7 +96363,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     link.click();       
                 });
                 */
-            };axios.post('/servant/download', formdata).then(function (response) {
+            };axios.post('/download', formdata).then(function (response) {
                 console.log(response);
                 var url = response.data.url;
                 var link = document.createElement('a');
@@ -96562,7 +96562,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.did = this.$route.params.did;
         formdata.append('did', this.did);
         //console.log(formdata);
-        axios.post('/servant/missionlist', formdata).then(function (res) {
+        axios.post('/missionlist', formdata).then(function (res) {
             //console.log(res);
             if (_this.tabledata == null) {
                 _this.loading = true;
@@ -96784,7 +96784,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.did = this.$route.params.did;
         formdata.append('did', '-1');
         //console.log(formdata);
-        axios.post('/servant/missionlist', formdata).then(function (res) {
+        axios.post('/missionlist', formdata).then(function (res) {
             //console.log(res);
             if (_this.tabledata == null) {
                 _this.loading = true;
