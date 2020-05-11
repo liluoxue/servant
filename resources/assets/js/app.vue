@@ -202,10 +202,11 @@
         console.log(this.formline);
         axios.post('/api/auth/register',formdata).then(res=>{
           console.log(res);
-          this.$Message.success('登录成功');
           this.registermodal=false;
+          this.$Message.success('注册成功');
+          
         }).catch(res=>{
-          this.$Message.error(res.error);
+          this.$Message.error("注册失败");
         })
       },
       login: function (name) {

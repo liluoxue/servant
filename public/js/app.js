@@ -45385,6 +45385,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       this.registermodal = true;
     },
     register: function register() {
+      var _this = this;
+
       var formdata = new FormData();
       formdata.append('name', this.formline.name);
       formdata.append('email', this.formline.email);
@@ -45392,12 +45394,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       console.log(this.formline);
       axios.post('/api/auth/register', formdata).then(function (res) {
         console.log(res);
+        _this.registermodal = false;
+        _this.$Message.success('注册成功');
       }).catch(function (res) {
-        ViewUI.Message.error(res.error);
+        _this.$Message.error("注册失败");
       });
     },
     login: function login(name) {
-      var _this = this;
+      var _this2 = this;
 
       var formdata = new FormData();
       formdata.append('email', this.formline.email);
@@ -45408,14 +45412,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         if (res.data.access_token) {
           axios.defaults.headers.common['Authorization'] = "Bearer " + res.data.access_token;
           console.log(res.data.access_token);
-          _this.buttonif = false;
-          _this.loginmodal = false;
-          _this.$Message.success('登录成功');
+          _this2.buttonif = false;
+          _this2.loginmodal = false;
+          _this2.$Message.success('登录成功');
         }
       });
     },
     logout: function logout() {
-      var _this2 = this;
+      var _this3 = this;
 
       var formdata = new FormData();
       formdata.append('email', this.formline.email);
@@ -45424,8 +45428,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       axios.post('/api/auth/logout', formdata).then(function (res) {
         //console.log(res);
         axios.defaults.headers.common['Authorization'] = '';
-        _this2.buttonif = true;
-        _this2.$Message.success('退出成功');
+        _this3.buttonif = true;
+        _this3.$Message.success('退出成功');
       });
     },
     listjudge: function listjudge(name) {
@@ -45575,7 +45579,6 @@ var render = function() {
         "Modal",
         {
           attrs: { title: "登录" },
-          on: { "on-ok": _vm.ok, "on-cancel": _vm.cancel },
           model: {
             value: _vm.loginmodal,
             callback: function($$v) {
@@ -45674,7 +45677,6 @@ var render = function() {
         "Modal",
         {
           attrs: { title: "注册" },
-          on: { "on-ok": _vm.ok, "on-cancel": _vm.cancel },
           model: {
             value: _vm.registermodal,
             callback: function($$v) {
