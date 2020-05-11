@@ -45302,17 +45302,42 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       isCollapsed: false,
       loginmodal: false,
+      registermodal: false,
       buttonif: true,
       menuactive: 3,
       formline: {
-        username: '123',
-        password: ''
+        name: '123',
+        email: '',
+        password: '',
+        phone: ''
       }
     };
   },
@@ -45352,15 +45377,30 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         menuactive = '3';
       }
     },
+
     loginmodalalert: function loginmodalalert() {
       this.loginmodal = true;
     },
-
+    registermodalalert: function registermodalalert() {
+      this.registermodal = true;
+    },
+    register: function register() {
+      var formdata = new FormData();
+      formdata.append('name', this.formline.name);
+      formdata.append('email', this.formline.email);
+      formdata.append('password', this.formline.password);
+      console.log(this.formline);
+      axios.post('/api/auth/register', formdata).then(function (res) {
+        console.log(res);
+      }).catch(function (res) {
+        ViewUI.Message.error(res.error);
+      });
+    },
     login: function login(name) {
       var _this = this;
 
       var formdata = new FormData();
-      formdata.append('email', this.formline.username);
+      formdata.append('email', this.formline.email);
       formdata.append('password', this.formline.password);
 
       axios.post('/api/auth/login', formdata).then(function (res) {
@@ -45378,7 +45418,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       var _this2 = this;
 
       var formdata = new FormData();
-      formdata.append('email', this.formline.username);
+      formdata.append('email', this.formline.email);
       formdata.append('password', this.formline.password);
 
       axios.post('/api/auth/logout', formdata).then(function (res) {
@@ -45453,6 +45493,14 @@ var render = function() {
                         ? _c("Button", { on: { click: _vm.loginmodalalert } }, [
                             _vm._v("\n            登录\n          ")
                           ])
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm.buttonif
+                        ? _c(
+                            "Button",
+                            { on: { click: _vm.registermodalalert } },
+                            [_vm._v("\n            注册\n          ")]
+                          )
                         : _c(
                             "Dropdown",
                             { on: { "on-click": _vm.listjudge } },
@@ -45462,7 +45510,7 @@ var render = function() {
                                 [
                                   _vm._v(
                                     "\n              " +
-                                      _vm._s(_vm.formline.username) +
+                                      _vm._s(_vm.formline.email) +
                                       "\n              "
                                   ),
                                   _c("Icon", {
@@ -45550,16 +45598,16 @@ var render = function() {
                 [
                   _c(
                     "FormItem",
-                    { attrs: { label: "用户名", prop: "user" } },
+                    { attrs: { label: "邮箱", prop: "user" } },
                     [
                       _c("Input", {
-                        attrs: { type: "text", placeholder: "用户名" },
+                        attrs: { type: "text", placeholder: "邮箱" },
                         model: {
-                          value: _vm.formline.username,
+                          value: _vm.formline.email,
                           callback: function($$v) {
-                            _vm.$set(_vm.formline, "username", $$v)
+                            _vm.$set(_vm.formline, "email", $$v)
                           },
-                          expression: "formline.username"
+                          expression: "formline.email"
                         }
                       })
                     ],
@@ -45609,6 +45657,108 @@ var render = function() {
                           on: { click: _vm.logout }
                         },
                         [_vm._v("注销")]
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            ],
+            1
+          )
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "Modal",
+        {
+          attrs: { title: "注册" },
+          on: { "on-ok": _vm.ok, "on-cancel": _vm.cancel },
+          model: {
+            value: _vm.registermodal,
+            callback: function($$v) {
+              _vm.registermodal = $$v
+            },
+            expression: "registermodal"
+          }
+        },
+        [
+          _c(
+            "div",
+            { staticStyle: { "text-align": "center" } },
+            [
+              _c(
+                "Form",
+                {
+                  ref: "formline",
+                  attrs: { model: _vm.formline, rules: "ruleInline" }
+                },
+                [
+                  _c(
+                    "FormItem",
+                    { attrs: { label: "邮箱", prop: "user" } },
+                    [
+                      _c("Input", {
+                        attrs: { type: "text", placeholder: "邮箱" },
+                        model: {
+                          value: _vm.formline.email,
+                          callback: function($$v) {
+                            _vm.$set(_vm.formline, "email", $$v)
+                          },
+                          expression: "formline.email"
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "FormItem",
+                    { attrs: { label: "昵称", prop: "user" } },
+                    [
+                      _c("Input", {
+                        attrs: { type: "text", placeholder: "昵称" },
+                        model: {
+                          value: _vm.formline.name,
+                          callback: function($$v) {
+                            _vm.$set(_vm.formline, "name", $$v)
+                          },
+                          expression: "formline.name"
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "FormItem",
+                    { attrs: { label: "密码", prop: "password" } },
+                    [
+                      _c("Input", {
+                        attrs: { type: "password", placeholder: "密码" },
+                        model: {
+                          value: _vm.formline.password,
+                          callback: function($$v) {
+                            _vm.$set(_vm.formline, "password", $$v)
+                          },
+                          expression: "formline.password"
+                        }
+                      })
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "FormItem",
+                    [
+                      _c(
+                        "Button",
+                        {
+                          attrs: { type: "primary" },
+                          on: { click: _vm.register }
+                        },
+                        [_vm._v("注册")]
                       )
                     ],
                     1

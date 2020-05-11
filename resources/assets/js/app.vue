@@ -64,9 +64,12 @@
             <Button v-if="buttonif" @click="loginmodalalert">
               登录
             </Button>
+            <Button v-if="buttonif" @click="registermodalalert">
+              注册
+            </Button>
             <Dropdown v-else @on-click="listjudge">
               <Button>
-                {{formline.username}}
+                {{formline.email}}
                 <Icon type="ios-arrow-down"></Icon>
               </Button>
 
@@ -86,11 +89,11 @@
       </Content>
       <Footer class="layout-footer-center">2020 &copy; DIOGUA</Footer>
     </Layout>
-    <Modal v-model="loginmodal" title="登录" @on-ok="ok" @on-cancel="cancel">
+    <Modal v-model="loginmodal" title="登录" >
       <div style="text-align:center">
         <Form ref="formline" :model="formline" rules="ruleInline">
-          <FormItem label="用户名" prop="user">
-            <Input type="text" v-model="formline.username" placeholder="用户名"></Input>
+          <FormItem label="邮箱" prop="user">
+            <Input type="text" v-model="formline.email" placeholder="邮箱"></Input>
           </FormItem>
           <FormItem label="密码" prop="password">
             <Input type="password" v-model="formline.password" placeholder="密码"></Input>
@@ -104,6 +107,25 @@
         </Form>
       </div>
     </Modal>
+    <Modal v-model="registermodal" title="注册" >
+      <div style="text-align:center">
+        <Form ref="formline" :model="formline" rules="ruleInline">
+          <FormItem label="邮箱" prop="user">
+            <Input type="text" v-model="formline.email" placeholder="邮箱"></Input>
+          </FormItem>
+          <FormItem label="昵称" prop="user">
+            <Input type="text" v-model="formline.name" placeholder="昵称"></Input>
+          </FormItem>
+          <FormItem label="密码" prop="password">
+            <Input type="password" v-model="formline.password" placeholder="密码"></Input>
+          </FormItem>
+          <FormItem>
+            <Button type="primary" @click="register">注册</Button>
+          </FormItem>
+          
+        </Form>
+      </div>
+    </Modal>
   </div>
 </template>
 <script>
@@ -112,11 +134,14 @@
       return {
         isCollapsed: false,
         loginmodal: false,
+        registermodal:false,
         buttonif: true,
         menuactive : 3,
         formline: {
-          username: '123',
-          password: ''
+          name: '123',
+          email:'',
+          password: '',
+          phone: ''
         }
       };
     },
@@ -162,13 +187,30 @@
           menuactive='3';
         }
       },
+
       loginmodalalert: function () {
         this.loginmodal = true;
       },
-      
+      registermodalalert: function () {
+        this.registermodal = true;
+      },
+      register:function(){
+        let formdata=new FormData();
+        formdata.append('name',this.formline.name);
+        formdata.append('email',this.formline.email);
+        formdata.append('password',this.formline.password);
+        console.log(this.formline);
+        axios.post('/api/auth/register',formdata).then(res=>{
+          console.log(res);
+          this.$Message.success('登录成功');
+          this.registermodal=false;
+        }).catch(res=>{
+          this.$Message.error(res.error);
+        })
+      },
       login: function (name) {
         let formdata = new FormData();
-        formdata.append('email', this.formline.username);
+        formdata.append('email', this.formline.email);
         formdata.append('password', this.formline.password);
 
         axios.post('/api/auth/login', formdata).then(res => {
@@ -185,7 +227,7 @@
       },
       logout: function () {
         let formdata = new FormData();
-        formdata.append('email', this.formline.username);
+        formdata.append('email', this.formline.email);
         formdata.append('password', this.formline.password);
 
         axios.post('/api/auth/logout', formdata).then(res => {
