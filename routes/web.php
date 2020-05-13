@@ -30,7 +30,10 @@ Route::post('/dormname','UploadController@dormname')->name('dormname');
 Route::post('/uplist','UploadController@uplist')->name('uplist');
 Route::post('/download','UploadController@download')->name('download');
 Route::post('/missionlist','UploadController@missionlist')->name('missionlist');
+Route::post('/dormlist','DormController@dormList')->name('dormlist');
 
+
+Route::resource('missions', 'MissionController');
 Route::get('/',function(){
     return view('test');
 });

@@ -16,10 +16,11 @@ class UploadController extends Controller
 
         $file = $request->file('file');
 
-        $mid = $request->mid;
+        $mid    = $request->mid;
         $dormid = $request->dormid;
         //dd($dormid);
-        $first = DB::table('dorms')->where('id', $dormid)->first();
+        $first  = DB::table('dorms')->where('id', $dormid)->first();
+        $mission= DB::table('missions')->where('id',$mid)->first();
         //dd($first);
         $dormname = $first->dormname;
         if (DB::table('submits')->where('mid', $mid)->count() == 0) {

@@ -99,10 +99,11 @@
         methods:{
             download:function(row){
                 let formdata=new FormData();
-                
-                if(!this.tabledata[row._index].id)
+                console.log(row.upif);
+                if(!this.tabledata[row._index].upif==0)
                 {
                     this.modal1=true;
+                    return;
                 }
                 formdata.append('id',this.tabledata[row._index].id);
                 let config={                

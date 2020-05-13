@@ -1,32 +1,12 @@
 <template>
     <div>
 
-        <Row type="flex" justify="center" align="middle" class="code-row-bg":gutter="24">
-            <Col span="8">
+        <Row type="flex" justify="center" align="middle" class="code-row-bg" :gutter="24">
+            <Col span="8" v-for='dorm in dormList' >
             <Card style="width:320px align:middle" class="ivu-card-align" v-model="did[0]">
-                <div style="text-align:center" @click="mission1">
+                <div style="text-align:center" @click="dormMission(dorm)">
                     <img src="https://ae01.alicdn.com/kf/He72b1ab406f44cfea9039c32270004caN.png">
-                    <h3>1</h3>
-                </div>
-            </Card>
-            </Col>
-
-            　　　　　　
-            <Col span="8">
-            <Card style="width:320px align:middle" class="ivu-card-align">
-                <div style="text-align:center" @click="mission2">
-                    <img src="https://ae01.alicdn.com/kf/He72b1ab406f44cfea9039c32270004caN.png">
-                    <h3>2</h3>
-                </div>
-            </Card>
-            </Col>
-
-            　　　　　　
-            <Col span="8">
-            <Card style="width:320px align:middle" class="ivu-card-align">
-                <div style="text-align:center" @click="mission3">
-                    <img src="https://ae01.alicdn.com/kf/He72b1ab406f44cfea9039c32270004caN.png">
-                    <h3>3</h3>
+                    <h3>{{dorm.dormname}}</h3>
                 </div>
             </Card>
             </Col>
@@ -43,22 +23,30 @@
     export default {
         data() {
             return {
-                did: [1, 2, 3]
+                did: [1, 2, 3],
+                dormList:{}
             };
         },
         mounted() {
             console.log('Component mounted.')
+            axios.post('/dormlist').then(res=>{
+                this.dormList=res.data;
+            })
             //console.log(this.did);
         },
         methods: {
             mission1: function () {
-                this.$router.push('/mission/1');
+                this.$router.push('/dorm/1');
             },
             mission2: function () {
-                this.$router.push('/mission/2');
+                this.$router.push('/dorm/2');
             },
             mission3: function () {
-                this.$router.push('/mission/3');
+                this.$router.push('/dorm/3');
+            },
+            dormMission: function(dorm){
+                //console.log(dorm);
+                this.$router.push('/dorm/'+dorm.id);
             }
         }
     }

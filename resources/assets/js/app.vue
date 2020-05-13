@@ -89,7 +89,7 @@
       </Content>
       <Footer class="layout-footer-center">2020 &copy; DIOGUA</Footer>
     </Layout>
-    <Modal v-model="loginmodal" title="登录" >
+    <Modal v-model="loginmodal" title="登录" :footer-hide=true >
       <div style="text-align:center">
         <Form ref="formline" :model="formline" rules="ruleInline">
           <FormItem label="邮箱" prop="user">
@@ -104,10 +104,13 @@
           <FormItem>
             <Button type="dashed" @click="logout">注销</Button>
           </FormItem>
+          <div slot="footer">
+          
+          </div>
         </Form>
       </div>
     </Modal>
-    <Modal v-model="registermodal" title="注册" >
+    <Modal v-model="registermodal" title="注册" :footer-hide=true>
       <div style="text-align:center">
         <Form ref="formline" :model="formline" rules="ruleInline">
           <FormItem label="邮箱" prop="user">
@@ -122,7 +125,9 @@
           <FormItem>
             <Button type="primary" @click="register">注册</Button>
           </FormItem>
+          <div slot="footer">
           
+          </div>
         </Form>
       </div>
     </Modal>
@@ -173,18 +178,16 @@
           this.$router.push('/');
         } else
         if (name == 2) {
-          this.$router.push('/up');
-        } else
-        if (name == 3) {
+          //console.log(axios.defaults.headers.common['Authorization']);
           this.$router.push('/adminlist');
         }
         if(this.$route.path=='/')
         {
-          menuactive='1';
+          this.menuactive='1';
         }
         if(this.$route.path=='/adminlist')
         {
-          menuactive='3';
+          this.menuactive='2';
         }
       },
 
@@ -208,6 +211,11 @@
         }).catch(res=>{
           this.$Message.error("注册失败");
         })
+        /* axios.post('/api/auth/me').then(res=>{
+          console.log(axios.defaults.headers.common['Authorization']);
+          
+          
+        }) */
       },
       login: function (name) {
         let formdata = new FormData();
@@ -215,14 +223,30 @@
         formdata.append('password', this.formline.password);
 
         axios.post('/api/auth/login', formdata).then(res => {
-          console.log(res);
+          //console.log(res);
           if (res.data.access_token) {
             axios.defaults.headers.common['Authorization'] = "Bearer " + res.data.access_token;
-            console.log(res.data.access_token);
+            //console.log(res.data.access_token);
+            axios.post('/api/auth/user').then(res=>{
+                console.log(res.data.admin);
+                if(res.data.admin==1)
+                {
+                  this.storageData.setAdmin(true);
+                  console.log(this.storageData.isAdmin);
+                }
+                else
+                {
+                  this.storageData.setAdmin(false);
+                }
+            })
+            
             this.buttonif = false;
             this.loginmodal = false;
             this.$Message.success('登录成功');
           }
+        }).catch(res=>{
+          console.log(res);
+          this.$Message.error(res);
         })
 
       },

@@ -1,7 +1,8 @@
 <template>
 
     <Card>
-        <p slot="title">{{dname}}</p>
+        <p slot="title">管理员界面</p>
+        <Button slot="extra" @click="alertMissionModal" type="primary" size="small">创建任务</Button>
         <Table border :columns="columns" :data="tabledata">
 
             <template slot-scope="{ row }" slot="name">
@@ -12,10 +13,25 @@
 
             </template>
         </Table>
-        <Modal v-model="modal1" title="该宿舍还没交作业噢" @on-ok="ok" @on-cancel="cancel">
+        <Modal v-model="mmodal" title="该宿舍还没交作业噢" >
             <p>催他们交作业咯~</p>
         </Modal>
-
+        <Modal v-model="missionModal" title="注册" :footer-hide=true>
+      <div style="text-align:center">
+        <Form ref="formline" :model="formline" rules="ruleInline">
+          <FormItem label="任务名" prop="mname">
+            <Input type="text" v-model="mission.mname" placeholder="任务名"></Input>
+          </FormItem>
+         
+          <FormItem>
+            <Button type="primary" @click="createMission">新建</Button>
+          </FormItem>
+          <div slot="footer">
+          
+          </div>
+        </Form>
+      </div>
+    </Modal>
     </Card>
 
 
@@ -27,8 +43,9 @@
         data() {
             return {
                 mid: '1',
-                modal1: false,
+                mmodal: false,
                 loading: true,
+                missionModal: false,
                 did: '',
                 dname: '',
                 columns: [
@@ -51,12 +68,46 @@
                         align: 'center'
                     }
                 ],
+                mission:{
+                    mname:'',
+                    status:'',
+                    time:'',
+                },
                 tabledata: [
 
                 ]
             }
         },
         mounted: function () {
+            this.getMissionList();
+
+        },
+        methods: {
+            goto: function (row) {
+                console.log(row.id);
+                this.$router.push({
+                    name: 'admin',
+                    query: {
+                        missionid : row.id,
+                        dormid: this.did,
+                        missionname:row.fname
+                    }
+                })
+            },
+            alertMissionModal:function(){
+                this.missionModal=true;
+            },
+            createMission:function(){
+                let formdata=new FormData();
+                formdata.append("mname",this.mission.mname);
+                axios.post('/missions',formdata).then(res=>{
+                    this.$Message.success("添加成功~");
+                    this.missionModal=false;
+                    this.getMissionList();
+                });
+                
+            },
+            getMissionList: function () {
             let formdata = new FormData();
             formdata.append('mission', 'mission');
 
@@ -78,19 +129,7 @@
                 console.log(err);
             })
 
-        },
-        methods: {
-            goto: function (row) {
-                console.log(row.id);
-                this.$router.push({
-                    name: 'admin',
-                    query: {
-                        missionid : row.id,
-                        dormid: this.did,
-                        missionname:row.fname
-                    }
-                })
-            }
+        }
         }
 
     }

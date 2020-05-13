@@ -76,7 +76,7 @@
             //console.log(formdata);
             axios.post('/dormname',formdata,config).then(res =>{
                 this.upWork.dormname=res.data.dormname;
-                console.log(res.data.dormname);
+                //console.log(res.data.dormname);
             }).catch(err=>{
                 console.log(err);
             })

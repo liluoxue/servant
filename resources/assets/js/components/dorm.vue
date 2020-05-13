@@ -12,7 +12,7 @@
 
             </template>
         </Table>
-        <Modal v-model="modal1" title="该宿舍还没交作业噢" @on-ok="ok" @on-cancel="cancel">
+        <Modal v-model="modal1" title="该宿舍还没交作业噢">
             <p>催他们交作业咯~</p>
         </Modal>
 
