@@ -11,3 +11,9 @@ npm-debug.log
 yarn-error.log
 .env
 public/nginx.htaccess
+/*.log.*
+/*.log
+composer.json
+composer.lock
+package-lock.json
+/public/vendor/*
