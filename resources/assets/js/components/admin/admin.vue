@@ -100,7 +100,7 @@
             download:function(row){
                 let formdata=new FormData();
                 console.log(row.upif);
-                if(!this.tabledata[row._index].upif==0)
+                if(!this.tabledata[row._index].upif===0)
                 {
                     this.modal1=true;
                     return;
@@ -123,12 +123,17 @@
                 */
                axios.post('/download',formdata).then(response=>{
                     console.log(response);
-                    const url = response.data.url;               
-                    const link = document.createElement('a');                
-                    link.href = url;                
-                    link.setAttribute('download', response.data.name);                
-                    document.body.appendChild(link);                
-                    link.click();       
+                    if(response.data==="文件不存在"){
+                        this.$Message.error("文件不存在")
+                    }else{
+                        const url = response.data.url;
+                        const link = document.createElement('a');
+                        link.href = url;
+                        link.setAttribute('download', response.data.name);
+                        document.body.appendChild(link);
+                        link.click();
+                    }
+
                 });
             }
         }

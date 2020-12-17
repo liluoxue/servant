@@ -24,8 +24,12 @@ class DormController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
+        $dorm = new Dorm();
+        $dorm->dormname=$request->dormname;
+        $dorm->save();
+        return response()->isSuccessful();
         //
     }
 
@@ -38,6 +42,11 @@ class DormController extends Controller
     public function store(Request $request)
     {
         //
+        $dorm = new Dorm();
+        $dorm->dormname=$request->dormname;
+        $dorm->dormmember=1;
+        $dorm->save();
+        return response('succuess',200);
     }
 
     /**

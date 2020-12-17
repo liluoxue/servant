@@ -5,10 +5,12 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-require('./bootstrap');
+//require('./bootstrap');
 
 window.Vue = require('vue');
+window.axios = require('axios');
 import App from './app.vue'
+import axios from 'axios';
 import VueRouter from 'vue-router';
 import Vuex from 'vuex';
 //import iView from 'iview';
@@ -16,6 +18,8 @@ import Vuex from 'vuex';
 import ViewUI from 'view-design';
 import 'view-design/dist/styles/iview.css';
 import storageData from'./storageData';
+
+Vue.prototype.$axios = axios;
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -30,10 +34,11 @@ const RouterConfig = {
     routes: [
         // ExampleComponent laravel默认的示例组件
         { path: '/', meta:{isLogin: false,isAdmin:false},component: require('./components/ExampleComponent.vue') },
-        { path: '/up',meta:{isLogin: true,isAdmin:true},name:'up',component: require('./components/up.vue')},   
+        { path: '/up',meta:{isLogin: true,isAdmin:false},name:'up',component: require('./components/up.vue')},   
         { path: '/admin',meta:{isLogin: true,isAdmin:true},name:'admin',component: require('./components/admin/admin.vue')},
         { path: '/dorm/:did',name:'mission',meta:{isLogin: true,isAdmin:false},component: require('./components/dorm.vue')},
-        { path: '/adminlist',name:'adminlist',meta:{isLogin: true,isAdmin:true},component: require('./components/admin/adminlist.vue')}
+        { path: '/adminlist',name:'adminlist',meta:{isLogin: true,isAdmin:true},component: require('./components/admin/adminlist.vue')},
+        { path: '/admindorm',name:'admindorm',meta:{isLogin: true,isAdmin:true},component: require('./components/admin/admindorm.vue')}
     ]
 };
 

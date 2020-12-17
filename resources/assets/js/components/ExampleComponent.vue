@@ -3,7 +3,7 @@
 
         <Row type="flex" justify="center" align="middle" class="code-row-bg" :gutter="24">
             <Col span="8" v-for='dorm in dormList' >
-            <Card style="width:320px align:middle" class="ivu-card-align" v-model="did[0]">
+            <Card style="width:320px;align:middle" class="ivu-card-align" v-model="did[0]">
                 <div style="text-align:center" @click="dormMission(dorm)">
                     <img src="https://ae01.alicdn.com/kf/He72b1ab406f44cfea9039c32270004caN.png">
                     <h3>{{dorm.dormname}}</h3>
@@ -35,15 +35,7 @@
             //console.log(this.did);
         },
         methods: {
-            mission1: function () {
-                this.$router.push('/dorm/1');
-            },
-            mission2: function () {
-                this.$router.push('/dorm/2');
-            },
-            mission3: function () {
-                this.$router.push('/dorm/3');
-            },
+
             dormMission: function(dorm){
                 //console.log(dorm);
                 this.$router.push('/dorm/'+dorm.id);

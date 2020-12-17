@@ -3,6 +3,7 @@
     <Card>
         <p slot="title">管理员界面</p>
         <Button slot="extra" @click="alertMissionModal" type="primary" size="small">创建任务</Button>
+        <Button slot="extra" @click="toDorm" type="primary" size="small">dormlist</Button>
         <Table border :columns="columns" :data="tabledata">
 
             <template slot-scope="{ row }" slot="name">
@@ -96,6 +97,9 @@
             },
             alertMissionModal:function(){
                 this.missionModal=true;
+            },
+            toDorm:function(){
+              this.$router.push('admindorm');
             },
             createMission:function(){
                 let formdata=new FormData();

@@ -159,9 +159,31 @@
       }
 
     },
-
+    created:function() {
+      axios.defaults.headers.common['Authorization'] = document.cookie;
+      //console.log(document.cookie);
+      this.getme();
+      },
     methods: {
+      getme: function(){
+        axios.post('/api/auth/me').then(res=>{
+          this.formline.email=res.data.email;
+          this.formline.name=res.data.name;
+          if(res.data.admin==1)
+          {
+            this.storageData.setAdmin(true);
 
+          }
+          else
+          {
+            this.storageData.setAdmin(false);
+          }
+          this.buttonif=false;
+        }).catch(err=>{
+          this.$Message.error('relogin~');
+          axios.defaults.headers.common['Authorization']='';
+        })
+      },
       toUp: function () {
         this.$router.push('/up');
       },
@@ -227,8 +249,9 @@
           if (res.data.access_token) {
             axios.defaults.headers.common['Authorization'] = "Bearer " + res.data.access_token;
             //console.log(res.data.access_token);
-            axios.post('/api/auth/user').then(res=>{
-                console.log(res.data.admin);
+            document.cookie = "Bearer " + res.data.access_token;
+            axios.post('/api/auth/user',formdata).then(res=>{
+                console.log(res.data);
                 if(res.data.admin==1)
                 {
                   this.storageData.setAdmin(true);
@@ -257,10 +280,11 @@
 
         axios.post('/api/auth/logout', formdata).then(res => {
           //console.log(res);
-          axios.defaults.headers.common['Authorization'] = '';
-          this.buttonif=true;
-          this.$Message.success('退出成功');
+
         })
+        axios.defaults.headers.common['Authorization'] = '';
+        this.buttonif=true;
+        this.$Message.success('退出成功');
 
       },
       listjudge:function(name){

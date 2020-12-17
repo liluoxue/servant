@@ -37,7 +37,7 @@ Route::resource('missions', 'MissionController');
 Route::get('/',function(){
     return view('test');
 });
-
+Route::resource('dorms','DormController');
 Route::get('oauth','UploadController@oath')->name('oath');
 
 

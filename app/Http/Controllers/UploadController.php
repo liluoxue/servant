@@ -6,9 +6,17 @@ use App\Submit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Class UploadController
+ * @package App\Http\Controllers
+ */
 class UploadController extends Controller
 {
     //
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse|string[]
+     */
     public function fileupload(Request $request)
     {
 
@@ -24,7 +32,7 @@ class UploadController extends Controller
         //dd($first);
         $dormname = $first->dormname;
         if (DB::table('submits')->where('mid', $mid)->count() == 0) {
-            $submit = new Submit;
+            $submit = new Submit();
             $submit->mid = $mid;
             $submit->did = $dormid;
             //$submit->file = $path;
@@ -36,7 +44,7 @@ class UploadController extends Controller
                 $fileextention = $file->getClientOriginalExtension();
 
                 $fileroute = $file->getRealPath();
-                $filename = date('Y-m-d-H-i-s') . '-' . uniqid() . '-' . $fileextention;
+                //$filename = date('Y-m-d-H-i-s') . '-' . uniqid() . '-' . $fileextention;
                 //$judged=Storage::disk('upload'.'/'.$mid)->put($filename,file_get_contents($fileroute));
                 $data['code'] = '0';
                 $data['msg'] = 'ok';
@@ -55,7 +63,7 @@ class UploadController extends Controller
                 $fileextention = $file->getClientOriginalExtension();
 
                 $fileroute = $file->getRealPath();
-                $filename = date('Y-m-d-H-i-s') . '-' . uniqid() . '-' . $fileextention;
+                //$filename = date('Y-m-d-H-i-s') . '-' . uniqid() . '-' . $fileextention;
                 //$judged=Storage::disk('upload'.'/'.$mid)->put($filename,file_get_contents($fileroute));
                 $data['code'] = '0';
                 $data['msg'] = 'ok';
@@ -69,20 +77,37 @@ class UploadController extends Controller
         }
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\View\View
+     */
     public function upindex()
     {
         return view('upindex');
     }
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\View\View
+     */
     public function upyes()
     {
         return view('upyes');
     }
+
+    /**
+     * @param Request $request
+     * @return array
+     */
     public function dormname(Request $request)
     {
         $dormid = $request->dormid;
         $first = DB::table('dorms')->where('id', $dormid)->first();
         return ['dormname' => $first->dormname];
     }
+
+    /**
+     * @param Request $request
+     * @return array
+     */
     public function uplist(Request $request)
     {
         $mid = $request->missionid;
@@ -98,7 +123,7 @@ class UploadController extends Controller
         //$tabledata=$tabledata->toArray();
         //dd($tabledata);
         $uplist = array();
-        for ($i = 0; $i < count($dorm); $i++) {
+        for ($i = 0, $iMax = count($dorm); $i < $iMax; $i++) {
             if ($tabledata->where('did', $dorm[$i])->count() == 0) {
                 $uplist[$i] = collect(['dormname', 'upif', 'id']);
                 $uplist[$i] = $uplist[$i]->combine([$dormname[$i], 0, '']);
@@ -138,18 +163,33 @@ class UploadController extends Controller
          */
         return $uplist;
     }
+
+    /**
+     * @param Request $request
+     * @return array
+     */
     public function download(Request $request)
     {
         $id = $request->id;
-        $path = DB::table('submits')->where('id', $id)->first()->file;
+        $path = DB::table('submits')->where('id', $id)->first();
+        if($path===null){
+            return ['data' => '文件不存在'];
+        }
+        $path = $path->file;
         $name = basename($path);
         //return response()->download(storage_path('app/' . $path), $name . '.cpp');
         $data=[
             'url'=>storage_path('app/' . $path),
-            'name'=>$name
+            'name'=>$name,
+            'data'=>'获取成功'
         ];
         return $data;
     }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function missionlist(Request $request)
     {
         $did=$request->did;
@@ -171,6 +211,10 @@ class UploadController extends Controller
         ];
         return response()->json($data);
     }
+
+    /**
+     * @return mixed
+     */
     public function oath()
     {
 

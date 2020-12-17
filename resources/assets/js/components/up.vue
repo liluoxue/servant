@@ -15,7 +15,7 @@
             </Input>
         </FormItem>
         <FormItem prop="password" label="任务号">
-            <Input type="text" v-model="upWork.missionid" placeholder="任务号">
+            <Input type="text" v-model="upWork.missionid" placeholder="任务号" disabled>
             <Icon type="ios-lock-outline" slot="prepend"></Icon>
             </Input>
         </FormItem>
